@@ -147,7 +147,14 @@ def readColmapSceneInfo(path, images, eval, llffhold=8):
     cam_infos_unsorted = readColmapCameras(cam_extrinsics=cam_extrinsics, cam_intrinsics=cam_intrinsics, images_folder=os.path.join(path, reading_dir))
     cam_infos = sorted(cam_infos_unsorted.copy(), key = lambda x : x.image_name)
 
-    if eval:
+    test_list_path = os.path.join(path, "test_list.txt")
+    if eval and os.path.exists(test_list_path):
+        with open(test_list_path) as f:
+            test_names = {line.strip() for line in f if line.strip()}
+        train_cam_infos = [c for c in cam_infos if c.image_name not in test_names]
+        test_cam_infos = [c for c in cam_infos if c.image_name in test_names]
+        print(f"Using custom test list: {len(test_cam_infos)} test, {len(train_cam_infos)} train")
+    elif eval:
         train_cam_infos = [c for idx, c in enumerate(cam_infos) if idx % llffhold != 0]
         test_cam_infos = [c for idx, c in enumerate(cam_infos) if idx % llffhold == 0]
     else:

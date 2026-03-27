@@ -7,7 +7,7 @@ import numpy as np
 CUSTOM_DIR = os.path.join(os.path.dirname(__file__), "custom_Dataset", "inputs")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "custom_Dataset_blender")
 
-OPENCV_CONVENTION = True
+OPENCV_CONVENTION = False
 
 def main():
     with open(os.path.join(CUSTOM_DIR, "metadata.json"), "r") as f:
